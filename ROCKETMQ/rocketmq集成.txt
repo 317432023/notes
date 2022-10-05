@@ -1,0 +1,10 @@
+rocketmq集成
+       rocketmq源码与安装        https://github.com/apache/rocketmq
+       rocketmq监控台源码安装  https://github.com/apache/rocketmq-dashboard
+                                              https://github.com/apache/rocketmq-dashboard/blob/master/docs/1_0_0/UserGuide_CN.md
+       RocketMQ+springboot整合 
+                                              https://blog.csdn.net/CSDN877425287/article/details/121964142
+                                              https://www.jianshu.com/p/f7b59073ea01
+       RocketMQ顺序消息          https://blog.csdn.net/CSDN877425287/article/details/120007739
+
+       搭建一个高可用的分布式RocketMQ集群 https://blog.csdn.net/ruanhao1203/article/details/89451754#5%E3%80%81Rocket%20Web%E7%AE%A1%E7%90%86%E7%95%8C%E9%9D%A2

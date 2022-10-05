@@ -1,0 +1,39 @@
+@Component
+public class AddResponseHeaderFilter extends OncePerRequestFilter {
+ 
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain) throws ServletException, IOException {
+        response.addHeader("X-Frame-Options", "DENY");
+        response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate, max-age=0");
+        response.addHeader("Cache-Control", "no-cache='set-cookie'");
+        response.addHeader("Pragma", "no-cache");
+        filterChain.doFilter(request, response);
+    }
+}
+
+<bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+  <property name="cacheSeconds" value="0"/>
+  <property name="useExpiresHeader" value="true"/>
+  <property name="useCacheControlHeader" value="true"/>
+  <property name="useCacheControlNoStore" value="true"/>
+</bean>
+
+@Override
+public void addInterceptors(InterceptorRegistry registry) {
+    WebContentInterceptor webContentInterceptor = new WebContentInterceptor();
+    webContentInterceptor.setCacheSeconds(0);
+    webContentInterceptor.setUseExpiresHeader(true);
+    webContentInterceptor.setUseCacheControlHeader(true);
+    webContentInterceptor.setUseCacheControlNoStore(true);
+    registry.addInterceptor(new WebContentInterceptor());
+}
+
+public class HttpResponseInterceptorHandler extends HandlerInterceptorAdapter {
+    // 实现HandlerInterceptor  或者 继承HandlerInterceptorAdapter都可以,如果想看着简洁就使用后者
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        response.addHeader("content-test","123");
+        return true;
+    }
+}

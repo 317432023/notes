@@ -1,0 +1,9 @@
+这是可以直接播放优酷、爱奇艺、腾讯 VIP视频的链接：
+https://jx.parwix.com:4433/player/analysis.php?v=视频地址
+
+示例：
+https://jx.parwix.com:4433/player/analysis.php?v=https://v.youku.com/v_show/id_XMjkzNDEwMzM3Mg==.html
+
+https://jx.parwix.com:4433/player/analysis.php?v=https://www.iqiyi.com/v_1yz1tnxmsvk.html?vfrm=pcw_home&vfrmblk=712211_dianying&vfrmrst=712211_dianying_image3
+
+https://jx.parwix.com:4433/player/analysis.php?v=https://v.qq.com/x/cover/mzc002009e5o3hm.html

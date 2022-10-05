@@ -1,0 +1,10 @@
+
+在tomcat服务器上，打开tomcat bin下面的 catalina.sh文件(vim bin/catalina.sh)(Windows系统为catalina.bat)，在文件中添加如下的配置项
+
+Windows 系统
+set "JAVA_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=60222"
+
+Linux 系统
+JAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=60222"
+
+重启Tomcat

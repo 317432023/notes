@@ -1,0 +1,41 @@
+Response.addHeader()和Response.setHeader()的区别
+
+1.setHeader
+response.setHeader(“mytest”,“aa”);
+response.setHeader(“mytest”,“bb”);
+
+Header中：
+	k1:mytest  v1:"bb"
+
+2.addHeader
+response.addHeader(“mytest”,“aa”);
+response.addHeader(“mytest”,“bb”);
+
+Header中：
+	k1:mytest  v1:"aa"
+	k2:mytest  v2:"bb"
+
+3.混合用1
+response.addHeader(“mytest”,“aa”);
+response.addHeader(“mytest”,“bb”);
+response.setHeader(“mytest”,“dd”);
+
+Header中：
+	k1:mytest  v1:"dd"
+	k2:null  v2:null
+
+4.混合用2
+response.addHeader(“mytest”,“aa”);
+response.addHeader(“mytest”,“bb”);
+response.setHeader(“mytest”,“dd”);
+response.setHeader(“mytest”,“ee”);
+
+Header中：
+	k1:mytest  v1:"ee"
+	k2:null  v2:null
+
+5.总结：
+
+	1.addHeader当头部k相同时新增，setHeader当头部k相同时替换
+	2.setHeader当头部有多个相同的k时，只留下一个并替换，另外的赋值为null。
+

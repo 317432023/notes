@@ -1,0 +1,10 @@
+NETSTAT -ANO|FINDSTR 8082
+
+  TCP    0.0.0.0:8082           0.0.0.0:0              LISTENING       6032
+  TCP    [::]:8082              [::]:0                 LISTENING       6032
+
+tasklist | findstr 6032
+
+  java.exe                      6032 Console                    1    624,484 K
+
+

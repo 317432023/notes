@@ -1,0 +1,2 @@
+安装插件 CamelCase PascalCase Converter
+互转快捷键 ctrl+shift+alt+y

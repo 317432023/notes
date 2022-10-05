@@ -1,0 +1,8 @@
+1、开放9876端口和10911端口
+
+2、修改conf/broker.conf，在最后加上
+    brokerIP1=xx.xx.xx.xx (自己的公网ip)
+
+3、broker启动时需改成自己的公网ip
+    nohup sh mqbroker -n xx.xx.xx.xx:9876  -c ../conf/broker.conf             
+    >/usr/local/rocketmq/logs/broker.log 2>&1 &
