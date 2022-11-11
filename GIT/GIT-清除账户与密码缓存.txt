@@ -1,0 +1,25 @@
+在使用git的过程中，我们也会经常遇到以前保存在git的用户名密码忘记了，或者不用了。在公司也可能遇到保存了用户名和密码的同事离职，换成新来的员工。在这些情况下，我们就要清除掉保存在git中的用户名和密码，重新缓存。
+
+# 重置凭证存储模式 清除配置中纪录的用户名和密码，下次提交代码时会让重新输入账号密码：
+git config --system --unset credential.helper
+
+# 查看git配置信息
+git config --list
+
+# 查询当前凭证存储模式
+git config credential.helper
+
+# 设置凭证存储模式
+# store会将凭证用明文的形式存放在磁盘中，并且永不过期。 这意味着除非你修改了你在 Git 服务器上的密码，否则你永远不需要再次输入你的凭证信息。 这种方式的缺点是你的密码是用明文的方式存放在你的 home 目录下。
+# cache 会将凭证存放在内存中一段时间。 密码永远不会被存储在磁盘中，并且在15分钟后从内存中清除。
+# osxkeychain 如果你使用的是 Mac，Git 还有一种 “osxkeychain” 模式，它会将凭证缓存到你系统用户的钥匙串中。 这种方式将凭证存放在磁盘中，并且永不过期，但是是被加密的，这种加密方式与存放 HTTPS 凭证以及 Safari 的自动填写是相同的。
+# wincred
+# manager 如果你使用的是 Windows，你可以安装一个叫做 “Git Credential Manager for Windows” 的辅助工具。 这和上面说的 “osxkeychain” 十分类似，但是是使用 Windows Credential Store 来控制敏感信息。
+git config --global credential.helper wincred
+
+#卸载插件
+git credential-manager uninstall
+
+参考
+https://zhuanlan.zhihu.com/p/157751660
+
