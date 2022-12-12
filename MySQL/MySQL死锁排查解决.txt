@@ -1,0 +1,21 @@
+
+show OPEN TABLES where In_use > 0;
+
+UNLOCK TABLES;
+
+show processlist;
+
+SELECT
+    concat('KILL ', id, ';'),
+    command,
+    time,
+    state,
+    info,
+    USER,
+    HOST,
+    db
+FROM
+    information_schema.PROCESSLIST
+WHERE
+    USER = 'test_erp'
+AND command <> 'sleep';
