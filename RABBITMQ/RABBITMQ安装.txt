@@ -1,0 +1,152 @@
+# windows环境安装rabbitmq
+erlang安装后设置环境变量（假设安装路径如下配置）
+ERLANG_HOME=C:\erl-24.2\erts-12.2
+PATH=%PATH%;%ERLANG_HOME%\bin
+
+rabbit下载地址https://github.com/rabbitmq/rabbitmq-server/releases
+rabbit安装后启用并进入rabbitmq控制台
+进入rabbitmq安装目录下的sbin
+set erlang_home=C:\erl-24.2\erts-12.2
+c:
+cd C:\rabbitmq-server-3.9.12\rabbitmq_server-3.9.12\sbin
+rabbitmq-plugins.bat enable rabbitmq_management
+rabbitmqctl add_user admin admin # 新增账号密码都设置为admin
+rabbitmqctl set_user_tags admin administrator # 设置用户分配操作权限
+rabbitmqctl set_permissions -p "/" admin ".*" ".*" ".*" # 给admin 虚拟目录"/" 下所有资源的配置、写、读权限以便管理其中的资源
+rabbitmqctl list_permissions -p /
+
+rabbitmqctl list_users
+
+rabbitmq.config 配置文件放到rabbitmq安装文件下的etc文件下，其内容为如下，作用为允许admin和guest两个用户通过远程ip访问
+[
+{rabbit, [{tcp_listeners, [5672]}, {loopback_users, ["admin","guest"]}]}
+].
+
+net start RabbitMQ
+
+浏览器输入地址：http://localhost:15672，输入默认账号：guest 密码：guest  # guest 用户默认情况只能在 localhost本机下访问
+
+
+报错解决：
+{"init terminating in do_boot",{'cannot get bootfile','start_clean.boot'}} init terminating in do_boot ({cannot get bootfile,start_clean.boot})
+
+I also faced this issue and solved it by reinstalling it. Steps I followed on Windows 10:
+
+Uninstall RabbitMQ
+Delete the folder %APPDATA%\RabbitMQ
+Delete folder RabbitMQ Server from C:\ProgramFiles
+set ERLANG_HOME
+Reinstall RabbitMQ via administrator account
+Assuming you installed ERLANG via administrator account as well. If not then first reinstall Erlang before reinstalling RabbitMQ.
+
+
+
+
+# linux(ubuntu)环境安装rabbitmq
+uname -a
+lsb_release -a
+
+# erlang卸载
+
+
+（1）which erl
+sudo apt remove erlang
+sudo apt autoremove # 同时删除依赖
+sudo rm /etc/apt/sources.list.d/erlang-solution.list # 删除添加的仓库文件
+
+（2）sudo rm -rf /usr/bin/erl
+
+
+（3）sudo rm -rf /usr/lib/erlang
+
+#安装下erlang所依赖的环境
+sudo apt install gcc libncurses5-dev g++ unixodbc-dev freeglut3-dev libssl-dev libwxgtk3.0-dev make
+#下载erlang和rabbitmq ( 两者的匹配关系 https://www.rabbitmq.com/which-erlang.html)
+wget http://erlang.org/download/otp_src_25.3.tar.gz
+wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.11.11/rabbitmq-server-3.11.11.tar.xz
+#解压
+    tar -zxvf otp_src_25.3.tar.gz
+    #进入解压出来的otp_src_25.3目录
+    cd otp_src_25.3
+    # 配置并检查当前依赖库
+    sudo mkdir /opt/erlang_25.3
+    # --prefix参数时安装路径，我的是/opt/erlang_25.3，如果是其它路径，需要事先创建好，比如我的这个路径创建命令：sudo mkdir /opt/erlang_25.3
+    ./configure --prefix=/opt/erlang_25.3 --with-ssl --enable-threads --enable-smp-support --enable-kernel-poll --enable-hipe --without-javac
+ #编译
+    sudo make
+    #安装
+    sudo make install
+　　 #检验安装是否完成，上面设置了安装路径是/opt/erlang_25.3
+　　 /opt/erlang_25.3/bin/erl
+　　 #两次ctrl+c可以退出erl的编辑页面
+　　 #在/usr/local/bin下创建erl的软连接，注意安装目录，如果不创建软链接，rabbitmq启动时可能会报erl is not found
+　　 sudo ln -s /opt/erlang_25.3/bin/erl /usr/local/bin/erl
+　　 #然后查看软链接是否生效，输入erl看能否进入erlang的编辑页面
+　　 erl
+
+
+/**** 该步骤废弃
+# 此安装不一定是最新版 erlang
+sudo apt install erlang
+# 安装最新版 erlang
+sudo apt install wget
+wget -O- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
+
+echo "deb https://packages.erlang-solutions.com/ubuntu focal contrib" | sudo tee /etc/apt/sources.list.d/erlang-solution.list # Ubuntu 20
+echo "deb https://packages.erlang-solutions.com/ubuntu bionic contrib" | sudo tee /etc/apt/sources.list.d/erlang-solution.list # Ubuntu 18.04
+sudo apt update
+
+https://www.rabbitmq.com/which-erlang.html
+erl
+wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt install erlang
+
+#解压，-C参数时存放解压文件的目录，这里我是直接解压到/opt目录下
+    sudo tar -xvf rabbitmq-server-3.11.11.tar.xz -C /opt
+　　 #启动，启动后当前shell会被阻塞，按两次ctrl+c就可以停止运行了
+　　 sudo /opt/rabbitmq_server-3.11.11/sbin/rabbitmq-server　　
+
+#列出所有的插件
+    sudo /opt/rabbitmq_server-3.11.11/sbin/rabbitmq-plugins list
+#安装rabbitmq-management
+    sudo /opt/rabbitmq_server-3.11.11/sbin/rabbitmq-plugins enable rabbitmq_management
+
+****/
+
+##安装最新版 rabbitmq
+sudo apt-get install rabbitmq-server
+##安装指定版
+curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.deb.sh | sudo bash
+apt-cache madison rabbitmq-server # 查询目前可以安装的版本
+sudo apt-get install rabbitmq-server=3.11.11-1
+
+
+##验证是否安装成功
+systemctl status rabbitmq-server
+
+##启动允许web访问的插件
+rabbitmq-plugins enable rabbitmq_management
+
+
+    #rabbitmq的默认监听端口5672
+    netstat -tnlp|grep 5672
+    #5672      rabbitmq的默认监听端口，也就是AMQP协议端口
+    #15672    Web管理页面访问端口
+    #25672    集群端口
+
+
+##重启
+sudo service rabbitmq-server restart
+
+rabbitmqctl add_user admin adimin # 增加普通用户
+rabbitmqctl set_user_tags admin administrator # 给普通用户分配管理员角色
+
+#添加用户，语法：rabbitmqctl add_user 账号 密码
+    sudo /opt/rabbitmq_server-3.11.11/sbin/rabbitmqctl add_user  admin 123456
+
+#授权，语法：rabbitmqctl set_user_tags 账号 administrator
+    sudo /opt/rabbitmq_server-3.11.11/sbin/rabbitmqctl set_user_tags admin administrator
+    
+#权限主要有
+    #超级管理员(administrator)、监控者(monitoring)、策略制定者(policymaker)、普通管理者(management)
