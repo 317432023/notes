@@ -1,0 +1,55 @@
+# 一、分支合并
+eg.举例将feature分支合并到dev分支（并保持一条直线）
+
+## 步骤 1：
+
+git checkout dev             
+git pull origin dev
+
+git checkout feature         # 当前位于分支 feature
+git pull origin feature
+
+git rebase dev               # 变基为 dev 并到 当前分支 feature
+
+## 步骤 2：
+如有冲突解决（图示1-分支变基合并冲突、图示2-分支变基合并冲突解决）后执行如下两个语句:
+git commit -am "合并 XX主题"
+git rebase --continue        # 继续未完成的变基
+
+*注意：步骤二可能需要多次操作，直至最终 提示 Successfully rebased and updated refs/heads/tmp
+此时feature 是合并后最新的分支
+
+## 步骤 3：
+git checkout dev             #
+git merge feature            #
+
+(注：以上步骤1~3等价于 git checkout feature + git pull origin feature + git pull --rebase --autostash origin dev，若需要处理冲突如前所述处理)
+
+图示：
+图示1： git rebase 或 git rebase --continue 遇冲突
+
+图示2： 编辑 Result Apply 应用解决冲突
+
+
+其他：
+git log --oneline --graph # 查看提交历史 tree
+git branch -d feature     # 最后若不需要 feature 分支，可以删除它
+
+# 二、总结：如何保持 GIT 一条干净的主线 ？
+
+## 场景 1（同一个分支本地与远程合并）：
+git pull --rebase (注：等价于 git pull + git rebase )
+
+git log --oneline --graph
+
+## 场景 2（不同分支合并）：
+git checkout feature
+git rebase dev
+
+git checkout dev
+git merge feature
+
+(注：以上等价于 git checkout feature + git pull --rebase --autostash origin dev )
+git log --oneline --graph
+
+git branch -d feature
