@@ -1,0 +1,9 @@
+vim .gitignore
+application-druid.yml
+:wq
+
+#git rm erp-admin/src/main/resources/application-druid.yml # 先把这些文件从仓库中移除 将同时删除该文件
+
+git rm --cached erp-admin/src/main/resources/application-druid.yml # 如果不需要在本地也删除，可以在 rm 指令后边添加选项 --cached
+
+总结：被错误提交上去的文件需要移出仓库可以使用 git rm，但同时要保留该文件可以结合 .gitignore
