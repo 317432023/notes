@@ -1,5 +1,13 @@
-git branch -a                                           # 查看所有的分支
 
-git push origin --delete <branch_name> # 删除远程分支
+git branch -a                                                                                                         # 查看所有的分支
+
+git branch <new-branch-name>         [[origin/]<branch-name> | <tag-name>]    # [基于某个[远程]分支]创建新的分支
+git checkout -b <new-branch-name> [[origin/]<branch-name> | <tag-name>]    # [基于某个[远程]分支]创建新的分支 并自动切换到新建的分支
+
+git branch --set-upstream-to=origin/<branch-name>                                          #                                           建立本地分支与远程分支的关联 ( 同时设置默认的提交和拉取分支为当前分支) 
+
+git push -u origin <branch-name>                                                                       # 将本地分支推送到远程分支并 建立本地分支与远程分支的关联 ( 同时设置默认的提交和拉取分支为当前分支) 
+
 git branch -d <branch_name>                # 删除本地分支
 git branch -D <branch_name>                # 强制 删除本地分支
+git push origin --delete <branch_name> # 删除远程分支

@@ -7,10 +7,3 @@ git tag -d v0.9                              -- 删除本地的标签
 git push origin :refs/tags/v0.9       -- 删除远程仓库中的标签
 git fetch --tags                             -- 在其他克隆仓库上获取标签
 git fetch --all                                -- 在其他克隆仓库上获取标签
-
-git branch <new-branch-name> <tag-name>                        -- 根据tag创建新的分支
-#git checkout -b <new-branch-name> <tag-name>              -- 根据tag创建新的分支 并自动切换到新建的分支
-
-git branch --set-upstream-to=origin/<new-branch-name>    -- 建立本地分支与远程分支的关联 ( 同时设置默认的提交和拉取分支为当前分支) 
-
-或者使用 git push -u origin <远程分支> 更简洁地代替上面两个指令达到同样的效果
