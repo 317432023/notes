@@ -1,0 +1,13 @@
+
+box-sizing 定义元素的宽高如何计算即它是否包含内边距和边框的宽度。
+  当值为 content-box（默认）时，宽高仅包含元素的内容，不包含内边框和边框的宽度；（标准盒模型）
+  当值为 border-box时，宽高包含了元素的内容、内边距和边框的宽度；（IE怪异盒模型）
+  当值为inherit时表示继承父元素的定义
+
+参考文章：
+
+  CSS属性图示参考 - https://cssreference.io/box-model/#box-sizing
+
+  CSS3盒模型 - https://www.kancloud.cn/oldtimeofme/summary/1328986
+
+  最权威盒子模型图文解释（参考这一篇就够了） -https://baijiahao.baidu.com/s?id=1771903194701913718&wfr=spider&for=pc

@@ -1,0 +1,186 @@
+https://zhuanlan.zhihu.com/p/509390617  前端学习交流、自学、学习资料等推荐
+
+px 即 pixel 的缩写，意思是像素，它是由 Picture（图像）和 Element（元素）两个单词的字母所组成。
+
+设备像素（device pixels），又称为物理像素
+指设备能控制显示的最小物理单位，不一定是一个小正方形区块，也没有标准的宽高，只是用于显示丰富色彩的一个“点”而已
+从屏幕在工厂生产出的那天起，它上面设备像素点就固定不变了，单位为pt
+
+设备独立像素（Device Independent Pixel）：与设备无关的逻辑像素，代表可以通过程序控制使用的虚拟像素，是一个总体概念，包括了CSS像素在javaScript中可以通过window.screen.width/ window.screen.height 查看，例如得到的结果分别为 1920 和 1080
+
+dpr（device pixel ratio），设备像素比，代表设备独立像素到设备像素的转换关系，在JavaScript中可以通过 window.devicePixelRatio 获取（dpr = 设备像素 / 设备独立像素）
+当设备像素比为1:1时，使用1（1×1）个设备像素显示1个CSS像素
+当设备像素比为2:1时，使用4（2×2）个设备像素显示1个CSS像素
+当设备像素比为3:1时，使用9（3×3）个设备像素显示1个CSS像素
+
+分辨率 即 resolution，例如1024*768 = 786432 表示每一条水平线上包含1024个像素点，垂直线上包含768个像素点，总共786432个像素点。百万像素是什么概念，例如 1280*720=921600，约为92万像素，在市场上俗称百万像素。
+ppi 通常用于PC领域，即 Pixels Per Inch 每英寸对角线上所拥有的像素（pixel）数目表示像素密度，一英寸=2.54厘米
+dpi 通常用于打印机领域，即 Dots Per Inch 
+例如：小米二 4.3英寸、分辨率1280*720的手机 ppi = √(1280^2+720^2)/4.3=341.5359
+例如：苹果四 3.54英寸、分辨率960*640的手机 ppi = √(960^2+640^2)/3.54=326
+注意：以上4.3英寸和3.54英寸指的是都是屏幕对角线长度
+
+总结
+无缩放情况下，1个CSS像素等于1个设备独立像素
+设备像素由屏幕生产之后就不发生改变，而设备独立像素是一个虚拟单位会发生改变
+PC端中，1个设备独立像素 = 1个设备像素 （在100%，未缩放的情况下）
+在移动端中，标准屏幕（160ppi）下 1个设备独立像素 = 1个设备像素
+设备像素比（dpr） = 设备像素 / 设备独立像素
+每英寸像素（ppi），值越大，图像越清晰
+
+
+em 相对于父元素的字体大小。它是一个相对单位，若当前行内文本的字体尺寸未被人为设置，则相对于浏览器（一般以body为基准）的默认字体尺寸。
+
+eg. 任意浏览器的默认字体高都是 16px
+body {
+  font-size: 62.5%; /* 16px*62.5%=10px */
+}
+
+注意：em若使用不当容易造成字体大小逐层复合的连锁反应，为了避免1.2 * 1.2= 1.44的现象。比如说你在#content中声明了字体大小为1.2em，那么在声明p的字体大小时就只能是1em，而不是1.2em, 因为此em非彼em，它因继承#content的字体高而变为了1em=12px。
+
+rem 即（root element）font size of the root element - 相对于根元素（html）的字体大小。它是一个CSS3的相对单位，关于相对单位可参考 https://www.w3.org/TR/css3-values/#relative-lengths
+
+优点：rem避免了em字体大小逐层复合的连锁反应
+
+eg. 任意浏览器根元素的默认字体高都是 16px
+html { font-size: 16px;  /*  设置根元素的字体大小，可以根据需求调整  */ }
+html { font-size: 62.5%;  /*  公式16px*62.5%=10px  */ }
+
+vw，就是根据窗口的宽度，分成100等份，100vw就表示满宽，50vw就表示一半宽。（vw 始终是针对窗口的宽），同理，vh则为窗口的高度
+在桌面端，指的是浏览器的可视区域
+移动端指的就是布局视口
+
+rpx 是微信小程序解决自适应屏幕尺寸的尺寸单位。微信小程序规定屏幕的宽度为750rpx。
+微信小程序同时也支持rem尺寸单位，rem 规定屏幕的宽度为20rem, 所以 1rem = (750/20)rpx = 37.5 rpx
+
+总结
+CSS px：绝对单位，页面按精确像素展示
+CSS em：相对单位，基准点为父节点字体的大小，如果自身定义了font-size按自身来计算，整个页面内1em不是一个固定的值
+CSS rem：相对单位，可理解为root em, 相对根节点html的字体大小来计算
+CSS vh、vw：主要用于页面视口大小布局，在页面布局上更加方便简单
+对于只需要适配少部分手机设备，且分辨率对页面影响不大的，使用px即可 
+对于需要适配各种移动设备，使用rem，例如只需要适配iPhone和iPad等分辨率差别比较挺大的设备。
+
+注意：
+1.网上很多关于rem的资料，基本都说浏览器的默认字号就是16px，然后直接定义font-size:62.5%。
+但是，rem属于css3的属性，有些浏览器的早期版本和一些国内浏览器的默认字号并不是16px，那么上面的10/16换算就不成立，直接给html定义font-size: 62.5%不成立。
+2.chrome强制字体最小值为12px，低于12px按12px处理，那上面的1rem=10px就变成1rem=12px，出现偏差。
+解决方案： 将1rem=10px换为1rem=100px（或者其它容易换算的比例值）;不要在pc端使用rem。
+那么上面的页面根元素样式要改为：html {font-size: 625%; /*100 ÷ 16 × 100% = 625%*/}
+
+各分辨率媒体查询换算：
+@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {
+    html { font-size: 703%; }
+}
+@media screen and (min-width:375px) and (max-width:383px) and (orientation:portrait) {
+    html { font-size: 732.4%; }
+}
+@media screen and (min-width:384px) and (max-width:399px) and (orientation:portrait) {
+    html { font-size: 750%; }
+}
+@media screen and (min-width:400px) and (max-width:413px) and (orientation:portrait) {
+    html { font-size: 781.25%; }
+}
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+    html { font-size: 808.6%; }
+}
+@media screen and (min-width:432px) and (max-width:479px) and (orientation:portrait){
+    html { font-size: 843.75%; }
+}
+
+其他：让 Chrome 支持小于12px 的文字方式有哪些？区别？
+
+Chrome 中文版浏览器会默认设定页面的最小字号是 12px，英文版没有限制
+
+原由 Chrome 团队认为汉字小于 12px 就会增加识别难度
+
+中文版浏览器
+
+与网页语言无关，取决于用户在 Chrome 的设置里（chrome://settings/languages）把哪种语言设置为默认显示语言
+
+系统级最小字号
+
+浏览器默认设定页面的最小字号，用户可以前往 chrome://settings/fonts 根据需求更改
+
+而我们在实际项目中，不能奢求用户更改浏览器设置
+
+对于文本需要以更小的字号来显示，就需要用到一些小技巧
+
+二、解决方案
+常见的解决方案有：
+
+zoom
+-webkit-transform:scale()
+-webkit-text-size-adjust:none
+Zoom
+zoom 的字面意思是 “变焦”，可以改变页面上元素的尺寸，属于真实尺寸
+
+其支持的值类型有：
+
+zoom:50%，表示缩小到原来的一半
+zoom:0.5，表示缩小到原来的一半
+使用 zoom 来” 支持 “ 12px 以下的字体
+
+代码如下：
+
+<style type="text/css">
+    .span1{
+        font-size: 12px;
+        display: inline-block;
+        zoom: 0.8;
+    }
+    .span2{
+        display: inline-block;
+        font-size: 12px;
+    }
+</style>
+<span class="span1">测试10px</span>
+<span class="span2">测试12px</span>
+效果如下：
+
+
+需要注意的是，Zoom 并不是标准属性，需要考虑其兼容性
+
+
+-webkit-transform:scale()
+针对 chrome 浏览器，加 webkit 前缀，用 transform:scale() 这个属性进行放缩
+
+注意的是，使用 scale 属性只对可以定义宽高的元素生效，所以下面代码中将 span 元素转为行内块元素
+
+实现代码如下：
+
+<style type="text/css">
+    .span1{
+        font-size: 12px;
+        display: inline-block;
+        -webkit-transform:scale(0.8);
+    }
+    .span2{
+        display: inline-block;
+        font-size: 12px;
+    }
+</style>
+<span class="span1">测试10px</span>
+<span class="span2">测试12px</span>
+效果如下：
+
+
+-webkit-text-size-adjust:none
+该属性用来设定文字大小是否根据设备 (浏览器) 来自动调整显示大小
+
+属性值：
+
+percentage：字体显示的大小；
+auto：默认，字体大小会根据设备 / 浏览器来自动调整；
+none: 字体大小不会自动调整
+html {-webkit-text-size-adjust: none;}
+这样设置之后会有一个问题，就是当你放大网页时，一般情况下字体也会随着变大，而设置了以上代码后，字体只会显示你当前设置的字体大小，不会随着网页放大而变大了
+
+所以，我们不建议全局应用该属性，而是单独对某一属性使用
+
+需要注意的是，自从 chrome 27 之后，就取消了对这个属性的支持。同时，该属性只对英文、数字生效，对中文不生效
+
+三、总结
+Zoom 非标属性，有兼容问题，缩放会改变了元素占据的空间大小，触发重排
+-webkit-transform:scale() 大部分现代浏览器支持，并且对英文、数字、中文也能够生效，缩放不会改变了元素占据的空间大小，页面布局不会发生变化
+-webkit-text-size-adjust 对谷歌浏览器有版本要求，在 27 之后，就取消了该属性的支持，并且只对英文、数字生效
