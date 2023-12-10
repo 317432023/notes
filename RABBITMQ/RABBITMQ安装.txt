@@ -101,7 +101,7 @@ sudo apt-get install rabbitmq-server=3.11.11-1
 systemctl status rabbitmq-server
 
 ##启动允许web访问的插件
-rabbitmq-plugins enable rabbitmq_management
+sudo rabbitmq-plugins enable rabbitmq_management
 
 
     #rabbitmq的默认监听端口5672
@@ -113,6 +113,11 @@ rabbitmq-plugins enable rabbitmq_management
 
 ##重启
 sudo service rabbitmq-server restart
+
+清除所有队列数据：
+sudo rabbitmqctl stop_app
+sudo rabbitmqctl reset
+sudo rabbitmqctl start_app
 
 rabbitmqctl add_user admin adimin # 增加普通用户
 rabbitmqctl set_user_tags admin administrator # 给普通用户分配管理员角色

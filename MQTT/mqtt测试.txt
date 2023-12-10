@@ -1,0 +1,16 @@
+﻿ 安装 mosquitto 下载地址 https://mosquitto.org/download/
+
+C:
+cd C:\Program Files\mosquitto
+
+启动服务
+ ./mosquitto.exe -p 1883 # 或者如下
+ ./mosquitto.exe -c mosquitto.conf # 到 mosquitto.conf 文件里配置 listener 1883 0.0.0.0
+
+订阅
+
+./mosquitto_sub.exe -t 'test/topic' -v
+
+发布
+
+./mosquitto_pub.exe -t 'test/topic' -m 'hello world'
