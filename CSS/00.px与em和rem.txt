@@ -1,4 +1,5 @@
 https://zhuanlan.zhihu.com/p/509390617  前端学习交流、自学、学习资料等推荐
+https://blog.csdn.net/MissXu666/article/details/133463718 尚硅谷CSS学习笔记（基本包含了CSS2和CSS3的重点知识内容）
 
 px 即 pixel 的缩写，意思是像素，它是由 Picture（图像）和 Element（元素）两个单词的字母所组成。
 
@@ -28,8 +29,9 @@ PC端中，1个设备独立像素 = 1个设备像素 （在100%，未缩放的�
 设备像素比（dpr） = 设备像素 / 设备独立像素
 每英寸像素（ppi），值越大，图像越清晰
 
+% 相对于父元素计算
 
-em 相对于父元素的字体大小。它是一个相对单位，若当前行内文本的字体尺寸未被人为设置，则相对于浏览器（一般以body为基准）的默认字体尺寸。
+em 相对于父元素的字体大小的倍数。它是一个相对单位，若当前行内文本的字体尺寸未被人为设置，则相对于浏览器（一般以body为基准）的默认字体尺寸。
 
 eg. 任意浏览器的默认字体高都是 16px
 body {
@@ -38,7 +40,7 @@ body {
 
 注意：em若使用不当容易造成字体大小逐层复合的连锁反应，为了避免1.2 * 1.2= 1.44的现象。比如说你在#content中声明了字体大小为1.2em，那么在声明p的字体大小时就只能是1em，而不是1.2em, 因为此em非彼em，它因继承#content的字体高而变为了1em=12px。
 
-rem 即（root element）font size of the root element - 相对于根元素（html）的字体大小。它是一个CSS3的相对单位，关于相对单位可参考 https://www.w3.org/TR/css3-values/#relative-lengths
+rem 即（root element）font size of the root element - 相对于根元素（html）的字体大小的倍数。它是一个CSS3的相对单位，关于相对单位可参考 https://www.w3.org/TR/css3-values/#relative-lengths
 
 优点：rem避免了em字体大小逐层复合的连锁反应
 

@@ -11,3 +11,121 @@ box-sizing 定义元素的宽高如何计算即它是否包含内边距和边框
   CSS3盒模型 - https://www.kancloud.cn/oldtimeofme/summary/1328986
 
   最权威盒子模型图文解释（参考这一篇就够了） -https://baijiahao.baidu.com/s?id=1771903194701913718&wfr=spider&for=pc
+
+# CSS长度单位
+px, em, rem, %
+注意：CSS中设置长度必须加单位否则样式无效
+
+# CSS元素的显示模式
+
+## 块元素 - block
+  在页面中独占一行 不会与任何元素共用一行 从上到下排列
+  默认宽度撑满父元素 默认高度由内容撑开
+  可以通过CSS设置高度
+
+## 行内元素或称内联元素 - inline
+  在页面中不独占一行，一行中不能容纳下的行内元素，会在下一行继续从左到右排列。
+  默认宽度：由内容撑开。
+  默认高度：由内容撑开。
+  无法通过CSS设置宽高
+
+## 行内块元素或称内联块元素（inline-block）
+  在页面中不独占一行，一行中不能容纳下的行内元素，会在下一行继续从左到右排列。
+  默认宽度：由内容撑开。
+  默认高度：由内容撑开。
+  可以通过CSS设置宽高
+
+# 各元素显示模式
+
+## 块元素标签
+  主体结构标签 - html body 
+  排版标签 - h1~h6 p pre div
+  列表相关标签 - ul ol li dl dt dd
+  表格相关标签 - table tbody thead tfoot tr caption
+  表单相关标签 -  form option
+
+## 行内元素标签
+  文本标签 - br em strong sup sub del ins
+  超链接与label - a label
+
+## 行内块元素
+  图片 - img
+  单元格 - td th 
+  表单控件 - input textarea select button
+  框架标签 - iframe
+
+# 修改元素的显示模式
+
+语法 - display:none|block|inline|inline-block 当值为none时元素会被隐藏
+
+# 注意点
+## padding
+其四个边设置顺序为上右下左，且不能为负数
+行内元素的左右内边距是没问题的，上下内边距不能完美的设置
+块级元素、行内块元素四个方向的内边距都可以完美设置
+
+## border 
+属性供20个
+
+## margin
+规则同padding 但是可以为负数
+子元素的margin是参考父元素的content计算的
+上和左margin影响自身的位置，下和右margin影响后面兄弟元素的位置
+块级元素和行内块元素均可以完美设置四个方向的margin，行内元素左右margin可以完美设置但是上下margin设置无效
+margin的值可以是auto，如果给一个块级元素设置左右margin都为auto，则该块级元素会在父元素中水平居中
+
+### margin塌陷问题
+第一子元素上margin 和 最后一个子元素的下margin  会作用在父元素上
+解决方法：给父元素设置不为0的padding或不为0的border或给父元素设则css样式overflow:hidden(不影响大小，推荐)
+
+### margin合并问题
+上面兄弟元素的下margin和下面兄第元素的上margin产生合并取最大的值，而不是相加
+无需解决，布局时候上下的兄弟元素只给一个设则上下边距就可以了
+
+## 处理内容的溢出
+### overflow
+overflow-x和overflow-y不能一个设置hidden一个设置visible
+overflow常用的值是hidden和auto，处理能处理溢出的显示方式，还可以解决很多疑难杂症
+
+## 元素的隐藏
+### visibility
+默认值是show，如果设置为hidden元素会隐藏但是还占有原来的位置的大小
+### none
+彻底隐藏并且不占任何位置和大小
+
+## 样式的继承
+有些样式会继承，元素如果本身设置了某个样式，就是用本身设置的样式，但如果没有设置某个样式，会从父元素开始一级一级继承（优先继承最近的祖元素）
+会继承的css属性：字体属性、文本属性（除了vertical-align）、文字颜色
+不会继承的css属性：边框、背景、外边距、内边距、宽高、溢出方式 等
+规律：能继承的属性都是不影响布局的，都是和盒子模型无关的。
+
+## 默认样式
+a - 下划线 字体颜色 鼠标小手
+h1~h6 - 文字加粗 文字大小 上下外边距
+p - 上下外边距
+ul ol - 左内边距
+body - 8px外边距（4个方向）
+优先级：元素的默认样式 > 继承的样式，如果要重置元素的默认样式，选择器一定要直接选择到该元素
+
+## 布局技巧
+行内元素和行内块元素可以被父元素当作文本处理 可以像处理文本对齐一样去处理行内和行内块在父元素中对齐（text-align text-indent line-height）
+如何让子元素在父元素中水平居中
+  若子元素为块元素，给父元素加上 margin:0 auto
+  若子元素为行内元素、行内块元素，给父元素加上 text-align:center
+如何让子元素在父元素中垂直居中
+  若子元素为块元素，给子元素加上 margin-top:(父元素content高-子元素盒子总高)/2
+  若子元素为行内元素、行内块元素，让父元素height = line-height，每隔子元素都加上 vertical-align:middle（补充：若想绝对垂直居中，父元素设置font-size:0）
+  
+## 元素之间的空白问题
+  行内元素、行内块元素，彼此间的换行会被浏览器解析为一个空白符，解决方案如下:
+  方案1：去掉换行符和空格（不推荐）
+  方案2：给父元素设置 font-size:0，在给需要显示文字的元素，单独设置字体大小（推荐）
+
+## 行内块的幽灵空白问题
+行内块元素与文本的基线对齐，而文本的基线与文本最底端之间是有一定距离的。解决方案如下：  
+  方案1：给行内块设置vertial值不为baseline即可，可设置为middle|bottom|top任一
+  方案2：若父元素中只有一张图片，设置图片为display:block
+  方案3：给父元素设置font-size:0，如果该行内块内部还有问题则需要单独设置font-size
+
+接下来介绍css布局
+  所有的CSS布局技巧依靠三个基本概念，positioning（定位）， floating（浮动）， and margin manipulation（外边距操纵）
