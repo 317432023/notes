@@ -1,0 +1,89 @@
+
+视口概念 - https://developer.mozilla.org/zh-CN/docs/Web/CSS/Viewport_concepts
+
+视口viewport—浏览器窗口里网页可见部分的边框区域。它不包括浏览器的地址栏、工具栏、状态栏。
+document.documentElement.clientWidth; /* 1477px 视口宽度 ：包括其 padding（不包括 border、margin 或垂直滚动条）*/ 
+window.innerWidth; /* 1494px 是用 CSS 像素单位表示的浏览器窗口的视口宽度，包括垂直滚动条 */
+window.outerWidth; /* 1920px 是指包括了浏览器外边框的窗口宽度。 */
+
+document.documentElement.clientHeight; /* 800 */
+window.innerHeight; /* 800px */
+window.outerHeight; /* 900px outerHeight 比 innerHeight 高 100px。这是因为 outerHeight 的测量包括浏览器框架在内，包括了地址栏和书签栏总共 100px 的高度 */
+
+innerHeight 和 innerWidth 所组成的区域通常被认为是布局视口（layout viewport）。浏览器的框架不被认为是视口的一部分。
+
+
+# 新增长度单位
+rem 根元素html字体大小的倍数
+vw 视口宽度的百分比
+vh 视口高度的百分比
+vmax 视口宽高大的那个百分比
+vmin 视口宽高小的那个百分比
+
+# 新增盒模型相关属性
+box-sizing : content-box(默认) | border-box
+
+resize : none(默认) | both | horizontal | vertical
+控制是否允许用户调节元素尺寸
+
+box-shadow : 
+为盒子添加阴影 默认值 none
+            /* 写两个值，含义：水平阴影位置 垂直阴影位置 */
+            /* box-shadow: 10px 10px; */
+
+            /* 写三个值，含义：水平阴影位置 垂直阴影位置 阴影的颜色 */
+            /* box-shadow: 10px 10px blue; */
+
+            /* 写三个值，含义：水平阴影位置 垂直阴影位置 模糊程度 */
+            /* box-shadow: 10px 10px 20px; */
+
+            /* 写四个值，含义：水平阴影位置 垂直阴影位置 模糊程度 阴影颜色 */
+            /* box-shadow: 10px 10px 20px blue; */
+
+            /* 写五个值，含义：水平阴影位置 垂直阴影位置 模糊程度 外延值 阴影颜色 */
+            /* box-shadow: -10px -10px 20px 10px blue; */
+
+            /* 写六个值，含义：水平阴影位置 垂直阴影位置 模糊程度 外延值 阴影颜色 内阴影 */
+            /* box-shadow: 10px 10px 20px 10px blue inset; */
+
+opactiy : 0~1
+设置不透明度(整个元素包括元素里的内容)，0-完全透明 1-完全不透明
+
+# 新增文本属性
+新增文本阴影 text-shadow : h-shadow v-shadow blur color;
+默认值 none 表示没有阴影，h-shadow 表示水平阴影的位置 blur表示模糊的距离 color阴影的颜色
+例如 text-shadow: 0px 0px 20px red;
+
+新增 文本换行 white-space : nomal (默认值) | pre | pre-wrap | pre-line | nowrap 
+normal - 文本超出边界换行，文本中换行被浏览器识别为一个空格（默认）
+pre - 原样输出
+pre-wrap - 在 pre 效果的基础上，超出元素边界自动换行
+pre-line - 在 pre 效果的基础上，超出元素边界自动换行，且识别文本中的换行，忽略空格
+nowrap - 强制不换行
+
+新增 text-overflow: clip (默认) | ellipsis;
+clip - 当内联内容溢出时将溢出部分裁切掉（默认）
+ellipsis - 当内联内容溢出块容器时，将溢出内容替换为...
+注意：要使text-overflow属性生效，块内容必须显示定义overflow为非visible，white-space为nowrap
+
+调整 text-decoration 成复合属性
+text-decoration : text-decoration-line || text-decoration-style || text-decoration-color
+例如 text-decoration: overline wavy blue;
+
+新增文本描边 text-stroke(仅webkit内核浏览器支持)，如下示例：
+h1 {
+            font-size: 100px;
+            /* -webkit-text-stroke-color:red; */
+            /* -webkit-text-stroke-width:3px; */
+            /* -webkit-text-stroke-width:3px; */
+            -webkit-text-stroke:3px black;
+            color: transparent;
+        }
+
+# 新增渐变
+
+
+
+# !!! 新增web字体
+
+
