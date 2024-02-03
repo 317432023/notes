@@ -8,3 +8,13 @@ npm install
 
 git config --global url."https://".insteadOf git://
 npm install
+
+3、node.js版本过高，导致vue2 版本的项目无法正常启动
+
+    "serve": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
+  },
+
+package.json 在这里插入代码片 SET NODE_OPTIONS=--openssl-legacy-provider && 
+
+

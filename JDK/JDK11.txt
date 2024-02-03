@@ -1,0 +1,19 @@
+Lambda形参自动类型推断
+字符串对象增强
+全新 HttpClient 取代 HttpURLConnection类 (支持最新的HTTP2和WebSocket协议)
+    
+jshell> Consumer<String> con = (var name)->{System.out.println(name);}; // Java 10我们认识了var关键字，它能够直接让局部变量自动进行类型推断，不过它不支持在lambda中使用，在Java 11中终于支持了
+
+jshell> var str = " AB\nC\nD ";
+System.out.println(str.isBlank()); // isBlank方法用于判断是否字符串为空或者是仅包含空格
+str.lines().forEach(System.out::println); //根据字符串中的\n换行符进行切割，分为多个字符串，并转换为Stream进行操作
+
+System.out.println(str.repeat(2)); // 字符串重复拼接两次
+System.out.println(str.strip()); // 去首尾空格
+System.out.println(str.stripLeading()); // 去首部空格
+System.out.println(str.stripTrailing()); // 去尾部空格
+
+jshell> HttpClient client = HttpClient.newHttpClient();   //直接创建一个新的HttpClient
+HttpRequest request = HttpRequest.newBuilder().uri(new URI("https://www.baidu.com")).build();
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+System.out.println(response.body());

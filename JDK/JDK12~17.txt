@@ -1,0 +1,109 @@
+jdk12
+  switch 增强 (实际上在Java 14才正式开放使用)
+
+    score /= 10;  
+    String res = null;
+    switch (score) {// 之前switch的写法
+        case 10: case 9:
+            res =  "优秀";
+        	break;
+        case 8: case 7:
+            res = "良好";
+        	break;
+        case 6:
+            res = "及格";
+        	break;
+        default:
+            res = "不及格";
+        	break;
+    }
+    return res;
+
+
+    score /= 10;
+    return switch (score) {   //增强版switch语法
+        case 10, 9 -> "优秀";   
+        case 8, 7 -> "良好"; 
+        case 6 -> "及格";
+        default -> "不及格";
+    };
+
+    若不想直接返回想做点什么其他的工作才返回结果，使用yield
+    return switch (score) {
+        case 10, 9:
+            //... 做点其他工作
+            yield "优秀";
+        default -> {
+            //... 做点其他工作
+            yield "不及格";
+        }
+    }
+
+jdk13
+
+    文本块表达式 (实际上在Java 15才正式开放使用)  (仿Python的三引号)
+
+    System.out.println( """
+                我
+                是
+                文
+                本
+                块
+    """);
+
+
+    新的 instanceof 语法（在Java16才正式开放使用）
+
+    if(obj instanceof Student student) {
+        return student.name.equals(this.name);
+    }
+    // 以下是旧的写法
+    if(obj instanceof Student) {
+        Student student = (Student) obj;
+        return student.name.equals(this.name);
+    }
+
+jdk14
+
+    空指针异常的改进 (明确指出是哪一个变量调用出现了空指针)
+
+    记录类型 (Java16才正式开放使用)
+
+        public record Account(String username, String password) implements Runnable {  //支持实现接口，但是不支持继承，因为继承的坑位已经默认被占了
+           @Override
+           public void run() {
+        
+           }
+        }
+        记录类型本质上也是一个普通的类，不过是final类型且继承自java.lang.Record抽象类的，它会在编译时，会自动编译出 public get hashcode 、equals、toString 等方法
+
+        // 以前使用lombok的写法
+        @Data
+        public class Account {   //使用Lombok，一个注解就搞定了
+             String username;
+             String password;
+        }
+
+jdk17
+
+    密封类 (用于限制类的继承)
+
+        public sealed class A  permits B{   //指定B继承A
+        }
+ 
+        public final class B extends A {   //在子类final，彻底封死
+        }
+
+        父类语法：
+        public sealed [abstract] [class/interface] 类名 [extends 父类] [implements 接口, ...] permits [子类, ...]{
+        }
+        子类语法：
+        public [final/sealed/non-sealed] class 子类 extends 父类 {   //必须继承自父类
+            //final类型：任何类不能再继承当前类，到此为止，已经封死了。
+            //sealed类型：同父类，需要指定由哪些类继承。
+            //non-sealed类型：重新开放为普通类，任何类都可以继承。
+        }
+
+        System.out.println(A.class.isSealed());   //是否为密封
+
+

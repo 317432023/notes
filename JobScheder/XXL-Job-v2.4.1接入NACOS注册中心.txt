@@ -1,0 +1,150 @@
+0、nacos2.0以上开放8848（控制台）,9848,9849（gRPC）端口
+
+1、xxl-job-admin # XxlJobGroup.java#getRegistryList修改如下：
+
+   public List<String> getRegistryList() {
+        if (addressList!=null && addressList.trim().length()>0) {
+            String newAddressList = addressList;
+            // address 执行器管理填入的机器地址 http://ip:port 这里自定义兼容 lb://servicename地址
+            if(addressList.startsWith("lb://")){
+                String serviceName = addressList.replace("lb://","");
+                DiscoveryClient discoveryClient = SpringContextUtil.getBean(DiscoveryClient.class);
+                List<ServiceInstance> instances = discoveryClient.getInstances(serviceName);
+                List<String> uriList = instances.stream().map(a -> a.getUri().toString()).collect(Collectors.toList());
+                StringBuilder strBuf = new StringBuilder();uriList.forEach(e->strBuf.append(e).append(','));
+                newAddressList = strBuf.deleteCharAt(strBuf.length() - 1).toString();
+            }
+            registryList = new ArrayList<String>(Arrays.asList(newAddressList.split(",")));
+        }
+        return registryList;
+    }
+
+2、xxl-job-admin # pom.xml 的 <dependencyManagement>节点增加：
+
+  <!-- SpringCloud 微服务 -->
+  <dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-dependencies</artifactId>
+    <version>2021.0.5</version>
+    <type>pom</type>
+    <scope>import</scope>
+  </dependency>
+  <!-- SpringCloud Alibaba 微服务 -->
+  <dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+    <version>2021.0.5.0</version>
+    <type>pom</type>
+    <scope>import</scope>
+  </dependency>
+  
+xxl-job-admin # pom.xml 的 <dependencies>节点增加：
+
+  <!-- 注册中心 & 配置中心 -->
+  <dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-bootstrap</artifactId>
+  </dependency>
+  
+3、xxl-job-admin 增加 bootstrap.yml 内容如下：
+
+spring:
+  application:
+    name: xxl-job-admin
+
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        server-addr: localhost:8848 #Nacos服务注册中心地址
+        group: DEFAULT_GROUP
+        
+4、xxl-job-executor-sample-springboot # pom.xml # dependencyManagement 增加如下：
+
+  <!-- SpringCloud 微服务 -->
+  <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-dependencies</artifactId>
+      <version>2021.0.5</version>
+      <type>pom</type>
+      <scope>import</scope>
+  </dependency>
+  <!-- SpringCloud Alibaba 微服务 -->
+  <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+      <version>2021.0.5.0</version>
+      <type>pom</type>
+      <scope>import</scope>
+  </dependency>
+
+ dependencies 节点增加如下：
+ 
+  <!-- 注册中心 & 配置中心 -->
+  <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+  </dependency>
+  <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+  </dependency>
+  <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+  </dependency>
+
+  <dependency>
+      <groupId>com.justtoplay</groupId>
+      <artifactId>xxl-job-plus</artifactId>
+      <version>2.3.1-nacos2</version>
+  </dependency>
+
+5、xxl-job-executor-sample-springboot 增加 bootstrap.yml 文件如下：
+spring:
+  application:
+    name: xxl-job-executor-sample
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        server-addr: localhost:8848 #Nacos服务注册中心地址
+        group: DEFAULT_GROUP
+      # 以下的config将读取nacos 配置中心其配置内容等同于 happy8-admin-dev.yaml = application-dev.yml
+      #config:
+      #  server-addr: localhost:8848 #Nacos作为配置中心地址
+      #  file-extension: yaml #指定yaml格式配置
+      #  refresh-enabled: true # Nacos动态感知配置文件变化，默认true
+      #  group: DEFAULT_GROUP
+
+xxl:
+  job:
+    plus:
+      admin:
+        # xxl-job-admin注册到注册中心的名称，默认xxl-job-admin，可不用配置。如xxl-job-admin注册名改动，请同步修改
+        service-name: xxl-job-admin
+        # 使用默认的就好，可以不用配置
+        access-token: default_token
+        #log-path:
+        #context-path:
+        #log-retention-days:
+      executor:
+        # executor 注册到xxl-job-admin executor列表的名称，默认同spring.application.name，可不用配置
+        service-name: ${spring.application.name}
+
+6、xxl-job-executor-sample-springboot 删除或注释掉 XxlJobConfig.java 整个文件内容
+
+7、登录 xxl-job-admin 执行器管理 设置执行器 xxl-job-executor-sample 的
+注册方式为：手动录入
+机器地址：lb://xxl-job-executor-sample
+

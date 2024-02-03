@@ -1,0 +1,116 @@
+模块化支持  (对客户端编程影响比较大)
+接口新增支持private方法
+集合类新增工厂方法of
+改进的 Stream API (iterate)
+其他更新增强 (Try-with-resource, Optional, 匿名内部类钻石运算符自动类型推断,多版本JAR包支持、CompletableFuture API的改进)
+
+jshell> public interface Test {
+    default void test(){
+        System.out.println("我是test方法默认实现");
+        this.inner(); 
+    }
+   private void inner(){ // 接口中可以存在私有方法了，但它只能被接口中的其他私有方法或是默认实现调用
+        System.out.println("我是接口中的私有方法！");
+    }
+}
+
+
+jshell> System.out.println(Map.of("name", "张三", "age", 20)); // 通过of创建的Map和通过Arrays创建的List比较类似，也是无法进行修改的。类似的还有Set.of List.of
+{name=张三, age=20}
+
+jshell> Stream.of("A","B","B","C").filter(s->s.equals("B")).distinct().forEach(System.out::println);
+B
+
+jshell> Stream.iterate(0,i->i+1).limit(20).forEach(System.out::println);
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+
+jshell> Stream.iterate(0,i->i+1).limit(20).takeWhile(i->i<10).forEach(System.out::println);
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+jshell> Stream.iterate(0,i->i+1).limit(20).dropWhile(i->i<10).forEach(System.out::println);
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+
+jshell> try(InputStream inputStream=Files.newInputStream(Paths.get("pom.xml"));) { // jdk7写法
+  for(int i=0; i<100; i++) 
+    System.out.print((char)inputStream.read());
+}catch(IOException e) {
+  System.err.println("出错了-" + e);
+}
+出错了-java.nio.file.NoSuchFileException: pom.xml
+
+jshell> InputStream inputStream = Files.newInputStream(Paths.get("pom.xml"));
+try (inputStream) {   //jdk9写法，单独丢进try中，效果是一样的
+  for (int i = 0; i < 100; i++)
+    System.out.print((char) inputStream.read());
+}catch(IOException e) {
+  System.err.println("出错了-" + e);
+}
+
+jshell> String s = null;
+Optional.ofNullable(s).ifPresent(str -> System.out.println("被包装的元素为："+str)); // jdk8
+
+Optional.ofNullable(s).ifPresentOrElse(str -> {  //jdk9 通过使用ifPresentOrElse，我们同时处理两种情况
+    System.out.println("被包装的元素为："+str);
+}, () -> {
+    System.out.println("被包装的元素为null");
+});
+
+Optional.ofNullable(s).ifPresent(System.out::println).or(() -> Optional.of("AAA"));   // 如果当前被包装的类不是null，依然返回自己，但是如果是null，那就返回Supplier提供的另一个Optional包装
+
+jshell> public abstract class Test<T>{   //一个泛型类
+    public T t;
+    public Test(T t) {
+        this.t = t;
+    }
+    public abstract T test();
+    
+    public static void main(String[] args) {
+        // 在低版本这样写是会直接报错的，因为匿名内部类不支持自动类型推断
+        // 但是很明显我们这里给的参数是String类型的，可以通过类型推断得到
+        // 在Java 9之后，这样的写法终于可以编译通过了
+        Test<String> test = new Test<>("AAA") {   
+     
+            @Override
+            public String test() {
+                return t;
+            }
+        };
+    }
+}

@@ -1,4 +1,7 @@
 # windows环境安装rabbitmq
+erlang与rabbitmq版本关系
+https://www.rabbitmq.com/which-erlang.html
+
 erlang安装后设置环境变量（假设安装路径如下配置）
 ERLANG_HOME=C:\erl-24.2\erts-12.2
 PATH=%PATH%;%ERLANG_HOME%\bin
@@ -130,3 +133,26 @@ rabbitmqctl set_user_tags admin administrator # 给普通用户分配管理员�
     
 #权限主要有
     #超级管理员(administrator)、监控者(monitoring)、策略制定者(policymaker)、普通管理者(management)
+
+
+# 允许局域网访问5672,25672
+
+sudo rabbitmq-plugins enable rabbitmq_management
+
+sudo vim /etc/rabbitmq/rabbitmq.config
+
+[
+{rabbit, [{tcp_listeners, [5672,25672]}, {loopback_users, ["guest"]}]}
+].
+
+
+sudo service rabbitmq-server restart
+
+# 为安全选择关闭15672端口的管理入口
+sudo rabbitmq-plugins disable rabbitmq_management
+
+# 开启 15674 stomp-websocket 端口 然后重启生效
+sudo rabbitmq-plugins enable rabbitmq_web_stomp rabbitmq_stomp rabbitmq_web_stomp_examples
+sudo service rabbitmq-server restart
+
+ws://192.168.2.113:15674/ws

@@ -1,0 +1,36 @@
+
+# Install snap on Ubuntu 14+ 在Ubuntu14以上安装 snap
+sudo apt update
+sudo apt install snapd
+sudo snap install hello-world #  验证是否可用，安装 snap 的 hello-world 模块并测试它是否可用
+hello-world #  命令行输入 hello-world 测试
+
+# Install certbot 安装 certbot
+sudo apt-get remove certbot
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+
+# Get a certificate and have Certbot edit your nginx configuration automatically. 生成证书并让 Certbot 自动编辑 nginx 配置文件
+sudo certbot --nginx 
+# sudo certbot certonly --nginx # conservative and make the changes to your nginx configuration by hand. 这种方式仅生成证书( 需要手动配置nginx )
+
+# a cron job or systemd timer that will renew your certificates automatically before they expire. You will not need to run Certbot again. 此时更新证书的配置已经自动配置到crontab（这种方式不一定可靠，存在掉签的可能）
+# The command to renew certbot is installed in one of the following locations:
+#/etc/crontab/
+#/etc/cron.*/*
+#systemctl list-timers
+
+# Test automatic renewal 试运行测试自动更新证书
+sudo certbot renew --dry-run 
+
+# visit https://yourwebsite.com/ in your browser and look for the lock icon in the URL bar. To confirm that your site is set up properly. 访问您的网站
+
+参考
+# 官方文档
+https://certbot.eff.org/instructions?ws=nginx&os=ubuntubionic
+
+# 免费 Let's Encrypt 证书申请、部署全攻略与自动续期教程
+https://cloud.tencent.com/developer/article/2203944
+
+# Getting certificates (and choosing plugins) Manually
+https://eff-certbot.readthedocs.io/en/latest/using.html#manual

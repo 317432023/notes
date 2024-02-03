@@ -10,7 +10,24 @@ cd C:\Program Files\mosquitto
 订阅
 
 ./mosquitto_sub.exe -t 'test/topic' -v
+./mosquitto_sub.exe -t 'test/topic' -v -u test -P test # 带用户名和密码认证 订阅 
 
 发布
 
 ./mosquitto_pub.exe -t 'test/topic' -m 'hello world'
+
+
+配置密码
+C:
+cd C:\Program Files\mosquitto
+touch pwfile.conf
+
+./mosquitto_passwd.exe -b pwfile.conf test test # 用户名test 密码test
+
+vim mosquitto.conf
+
+# 关闭匿名模式
+allow_anonymous false
+# 指定密码文件
+password_file C:\Program Files\mosquitto\pwfile.conf
+
