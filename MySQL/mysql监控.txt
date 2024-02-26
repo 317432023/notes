@@ -1,0 +1,33 @@
+mysql> show status like '%thread%';
++------------------------------------------+-------+
+| Variable_name                            | Value |
++------------------------------------------+-------+
+| Delayed_insert_threads                   | 0     |
+| Performance_schema_thread_classes_lost   | 0     |
+| Performance_schema_thread_instances_lost | 0     |
+| Slow_launch_threads                      | 0     |
+| Threads_cached                           | 0     |
+| Threads_connected                        | 42    |
+| Threads_created                          | 42    |
+| Threads_running                          | 1     |
++------------------------------------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> show variables like '%connect%';
++-----------------------------------------------+-----------------+
+| Variable_name                                 | Value           |
++-----------------------------------------------+-----------------+
+| character_set_connection                      | utf8            |
+| collation_connection                          | utf8_general_ci |
+| connect_timeout                               | 10              |
+| disconnect_on_expired_password                | ON              |
+| init_connect                                  |                 |
+| max_connect_errors                            | 10              |
+| max_connections                               | 1000            |
+| max_user_connections                          | 0               |
+| performance_schema_session_connect_attrs_size | 512             |
++-----------------------------------------------+-----------------+
+show variables like '%max_connections%';
+
+show variables like '%open_files_limit%';
+

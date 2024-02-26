@@ -1,0 +1,87 @@
+[client]
+default-character-set=utf8mb4
+
+[mysql]
+character_set_client=utf8mb4 # 支持使用emoji表情符号
+
+[mysqld_safe]
+socket          = /var/run/mysqld/mysqld.sock
+nice            = 0
+
+[mysqld]
+# 基础
+user            = mysql
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+basedir         = /usr
+datadir         = /var/lib/mysql
+tmpdir          = /tmp
+lc-messages-dir = /usr/share/mysql
+skip-external-locking
+
+character_set_server = utf8mb4
+lower_case_table_names = 1 # 表名不区分大小写(linux)
+default-storage-engine = INNODB
+innodb_large_prefix = ON # 修改Mysql索引长度限制on最大3072 byte，默认off大小767 byte
+innodb_file_format = Barracuda
+innodb_file_per_table = ON
+
+port            = 3306
+bind_address = 0.0.0.0
+skip_name_resolve = 1 # 强制使用ip连接数据库，避免hosts解析
+max_connections = 1000
+max_connect_errors = 10
+innodb_flush_log_at_trx_commit = 2
+transaction_isolation = READ-COMMITTED
+join_buffer_size = 8M
+tmp_table_size = 128M # 32M-256M，一般64M足矣。线程级分配，占用内存=该值乘以连接数
+sort_buffer_size = 4M
+interactive_timeout = 600
+wait_timeout = 600
+
+# 查询缓存
+query_cache_limit       = 1M
+query_cache_size        = 16M
+
+innodb_buffer_pool_size = 800M # 设置成内存的20%~65%左右
+innodb_buffer_pool_instances = 4 # 与CPU核心数保持一致
+innodb_buffer_pool_load_at_startup = 0
+innodb_lock_wait_timeout = 60
+# ssd硬盘用4000-8000，普通sata硬盘用400-800
+innodb_io_capacity_max = 8000
+innodb_io_capacity = 4000
+
+# 慢查询配置
+slow_query_log = ON
+slow_query_log_file = /var/log/mysql/slow-mysql.log
+long_query_time = 1 # 单位秒，刚上线的应用可以设置大一些默认10，后续慢慢优化程序然后改小
+log_queries_not_using_indexes=1 # 记录未使用索引的查询日志
+log_slow_admin_statements = 1
+log_slow_slave_statements = 1
+log_throttle_queries_not_using_indexes = 10 # 刚上线的应用可以设置大一些30~50，后续慢慢优化程序然后改小为10
+
+# 二进制日志
+expire_logs_days = 10
+max_binlog_size   = 100M
+min_examined_row_limit = 100 # 配合着慢查询sql记录用，指定为少于该值的行的查询就算慢sql不被记录成 慢sql日志
+
+# 错误日志
+log_error = /var/log/mysql/error.log
+
+
+# 隧道
+key_buffer_size         = 16M
+max_allowed_packet      = 16M
+thread_stack            = 192K
+thread_cache_size       = 8
+
+# 以下5.7才有的属性
+#innodb_page_size = 8192
+#innodb_page_cleaners = 4 # 与CPU核心数保持一致
+#innodb_undo_log_truncate = 1
+#innodb_max_undo_log_size = 2G
+#innodb_purge_rseg_truncate_frequency = 128
+#log_timestamps = system
+#show_compatibility_56 = ON # 运维参数，兼容5.6迁移过渡，5.7才有的属性
+#innodb_default_row_format = DYNAMIC # 默认是 DYNAMIC，5.7以下版本只能在建表时加 row_format=DYNAMIC
+
