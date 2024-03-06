@@ -1,0 +1,11 @@
+﻿
+
+log4j-1.2-api.jar   -->     (          log4j  -> log4j2)        将log4j 的日志转接到log4j2日志框架
+log4j-api.jar         -->                                                log4j2的api接口jar包
+log4j-core.jar       -->     (          log4j2 -> log4j-core) log4j2的日志输出核心jar包
+
+log4j-slf4j-impl.jar-->    (          slf4j  -> log4j2)          将 slf4j 转接到 log4j2 的日志输出框架  (不能和 log4j-to-slf4j同时用)
+log4j-to-slf4j.jar   -->    (          log4j2 -> slf4j)           将 log4j2的日志桥接到 slf4j  (不能和 log4j-slf4j-impl 同时用)
+
+slf4j-log4j12         -->    (          log4j2 -> slf4j)           将 slf4j 转接到 log4j  的日志输出框架(不能和 log4j-over-slf4j 同时用)
+log4j-over-slf4j     -->    (          log4j  -> slf4j)           将 log4j 桥接到 slf4j (不能和 slf4j-log4j12 同时用)

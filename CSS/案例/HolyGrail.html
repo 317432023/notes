@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+        header, footer {
+          background-color: #999;
+        }
+        .holy-grail-body {
+            display: flex;
+            flex: 1;
+            background-color: #ccc;
+        }
+        .main {
+            flex: 1;
+            background-color: pink;
+        }
+        .left, .right {
+            flex: 0 0 12em;
+            background-color: #ddd;
+        }
+        .left {
+            order: -1;
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body class="holy-grail">
+    <header>
+       flex 实现圣杯效果
+    </header>
+    <div class="holy-grail-body">
+        <main class="main">
+           主内容
+        </main>
+        <nav class="left">
+           左边
+        </nav>
+        <aside class="right">
+            右边
+        </aside>
+    </div>
+    <footer>
+        底部
+    </footer>
+</body>
+</html>

@@ -1,0 +1,11 @@
+https://github.com/ityouknow/awesome-spring-boot
+https://github.com/xkcoding/spring-boot-demo
+https://github.com/dyc87112/SpringBoot-Learning
+https://github.com/happyjared/spring-boot-learning
+
+https://github.com/zifangsky/webSocketDemo
+https://gitee.com/Yeauty/netty-websocket-spring-boot-starter
+https://blog.csdn.net/weixin_41451078/article/details/125464209
+
+https://gitee.com/xiandafu/springboot-plus
+https://github.com/cloudfavorites/favorites-web
