@@ -1,13 +1,29 @@
-location ~* ^/api/websocket/* {
-      proxy_pass http://mangodwsstest.mangod.top;
+    upstream csadmin {
+        #hash $remote_addr consistent;
+        #server sre1.ayunw.cn:8080;
+        #server sre2.ayunw.cn:8080;
+        #server sre3.ayunw.cn:8080;
+        server 127.0.0.1:8078;
+    }
 
-      proxy_read_timeout 300s;
-      proxy_send_timeout 300s;
-      proxy_set_header  Host $http_host;
-      proxy_set_header  X-Real-IP  $remote_addr;
-      proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header  X-Forwarded-Proto $scheme;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection $connection_upgrade;
-}
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        ''      close;
+    }
+ 
+    server {
+        listen 80;
+ 
+        location /api/chat_user/ws {
+            proxy_pass http://csadmin;
+            proxy_read_timeout 300s;
+            proxy_send_timeout 300s;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_set_header Host $host; # $http_host
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
