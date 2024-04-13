@@ -1,0 +1,11 @@
+# 一、防止"rm -rf /" 误删除
+# 安装safe-rm并把safe-rm的路径配置在/bin/rm的前面（注意：使用/bin/rm照样不受safe-rm的限制）
+
+apt-get install safe-rm 
+cp /bin/safe-rm /usr/local/bin/rm
+vim /etc/profile
+PATH=/usr/local/bin:/bin:/usr/bin:$PATH # 配置在前面的路径最后加载
+source /etc/profile                     # 生效后输入rm会执行safe-rm
+vim /etc/safe-rm.conf                   # 配置受保护的路径（不被safe-rm删除的路径）
+
+# 二、建立回收站机制
