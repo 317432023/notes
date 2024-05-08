@@ -1,0 +1,30 @@
+﻿规范
+
+DO|PO             XXXMapper
+BO|DO|PO        XXXService
+VO|BO|DO|PO  XXXController
+DTO                 XXXApi
+
+适用于单体多模块、分布式或微服务模块 maven 划分eg.
+module-system
+    module-system-api            接口规格 (用于跨模块或跨系统调用)
+    module-system-biz            业务实现
+        module-system-biz-manage    管理实现   包括了XXXMapper、 XXXService 和 XXXController，可调用 其他远程 XXXApi
+        module-system-biz-apiimpl   接口实现   这里没有Controller，取而代之 XXXApiImpl，可调用本模块 XXXService 和 其他远程 XXXApi，严禁直接调用其他模块 Service 和 Mapper
+
+module-member
+    module-member-api            接口规格 (用于跨模块或跨系统调用)
+    module-member-biz            业务实现
+        module-member-biz-manage    管理实现   包括了XXXMapper、 XXXService 和 XXXController，可调用 其他远程 XXXApi
+        module-member-biz-apiimpl   接口实现   这里没有Controller，取而代之 XXXApiImpl，可调用本模块 XXXService 和 其他远程 XXXApi，严禁直接调用其他模块 Service 和 Mapper
+
+module-mall
+    module-mall-api            接口规格 (用于跨模块或跨系统调用)
+    module-mall-biz            业务实现
+        module-mall-biz-manage    管理实现   包括了XXXMapper、 XXXService 和 XXXController，可调用 其他远程 XXXApi
+        module-mall-biz-apiimpl   接口实现   这里没有Controller，取而代之 XXXApiImpl，可调用本模块 XXXService 和 其他远程 XXXApi，严禁直接调用其他模块 Service 和 Mapper
+
+apiimpl 基本上需要引用 manage，manage禁止引用apiimpl
+合理划分就不要再单抽 mapper 和 service 模块 
+
+参考芋道源码 https://blog.csdn.net/weixin_39289390/article/details/127790045

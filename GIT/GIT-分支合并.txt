@@ -22,7 +22,7 @@ git rebase --continue        # 继续未完成的变基
 ## 步骤 3：
 git checkout dev             #
 git merge feature            #
-git rebase                        #
+git rebase                   #
 
 (注：以上步骤1~3等价于 git checkout feature + git pull origin feature + git pull --rebase --autostash origin dev，若需要处理冲突如前所述处理)
 
