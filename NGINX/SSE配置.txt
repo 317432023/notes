@@ -1,0 +1,57 @@
+﻿location /system/notice/subscribe {
+            # 配置代理的后端服务器地址
+            proxy_pass http://117.28.241.198:3201;
+
+            # 关闭代理缓存
+            proxy_cache off;
+
+            # 设置 Nginx 不对 SSE 响应进行缓冲，直接透传给客户端
+            proxy_buffering off;
+            
+            # 设置代理读取服务器响应的超时时间
+            proxy_read_timeout 24h;
+            
+            # 设置客户端连接的超时时间
+            proxy_connect_timeout 1h;
+
+            # 设置 HTTP 版本，SSE 需要 HTTP/1.1
+            proxy_http_version 1.1;
+            
+            # 保持连接活性，不发送连接关闭的信号
+            proxy_set_header Connection '';
+
+            # 配置代理传递的头部，确保 Host 头部正确传递
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            # proxy_set_header Upgrade $http_upgrade;
+            # proxy_set_header Connection 'upgrade';
+
+            # 设置代理的响应头部，保持传输编码为 chunked
+            proxy_set_header X-Accel-Buffering no;
+
+            # 若程序已支持跨域请不要配置跨域，否则无法访问
+            # 设置跨域资源共享 (CORS)，如果你的客户端和服务器不在同一个域上
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Allow-Credentials' 'true' always;
+            add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+            add_header 'Access-Control-Allow-Headers' 'Origin,Authorization,Accept,X-Requested-With' always;
+            if ($request_method = 'OPTIONS') {
+                # 如果请求方法为 OPTIONS，则返回 204 (无内容)
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS';
+                add_header 'Access-Control-Allow-Headers' 'Origin,Authorization,Accept,X-Requested-With';
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain charset=UTF-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
+}
+#  proxy_buffering off; 确保 Nginx 不会缓冲响应，而是直接将其发送给客户端，这对于 SSE 至关重要。
+#  proxy_read_timeout 设置了 Nginx 等待后端服务器响应的超时时间。SSE 需要长时间的连接，所以这个值设置得比较高。
+#  proxy_connect_timeout 设置了 Nginx 尝试与后端服务器建立连接的超时时间。
+#  proxy_http_version 1.1; 指定使用 HTTP/1.1，因为 SSE 需要这个版本的协议。
+#  proxy_set_header Connection ''; 确保 Nginx 不会发送 Connection: close 头部，这对于保持长连接至关重要。
+#  proxy_pass 指向后端服务的地址，这里应该替换为你的后端服务器地址。
+#  proxy_set_header X-Accel-Buffering no; 确保 Nginx 不会对此连接进行缓冲。
+#  CORS 相关的头部设置允许不同的源请求资源。这在你的服务需要被不同域的客户端访问时很有用。
