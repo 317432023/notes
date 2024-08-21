@@ -1,0 +1,8 @@
+npm config get registry
+npm config set registry https://registry.npmmirror.com
+
+国内镜像还有如下，根据自己的需要使用：
+淘宝：https://registry.npmmirror.com
+腾讯:  http://mirrors.cloud.tencent.com/npm/
+华为：https://mirrors.huaweicloud.com/repository/npm/
+中科大镜像:https://registry.npmjs.org/

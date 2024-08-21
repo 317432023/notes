@@ -1,0 +1,3 @@
+-- 版本兼容性与版本选择
+    https://docs.camunda.org/manual/latest/user-guide/spring-boot-integration/version-compatibility/
+

@@ -1,0 +1,6 @@
+﻿https://blog.csdn.net/boydonotcry/article/details/135954380
+
+完成以上操作后直接ip+端口号+/camunda/app/ 就能显示camunda Web端了 输入账号密码能成功登录
+
+*注意：访问 /camunda/app/ 最后要带上 /
+

@@ -7,3 +7,7 @@
   -A 参数列出所有进程
   -o 自定义输出字段，我们设定显示字段为stat（状态），ppid（父进程pid），pid（进程pid），cmd（命令行）这四个参数
   因为状态为 z 或者 Z的进程为僵尸进程，所以我们使用grep 抓取stat 状态为zZ进程；
+
+# 创建用户
+  useradd -s /bin/bash -c "User_01" -m user01 # 大写“G”将用户添加到增补组例如 -Gsambashare 
+  passwd user01

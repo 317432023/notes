@@ -1,1 +1,0 @@
-order by ${orderBy} limit ${(pageNum-1)*pageSize}, #{pageSize}

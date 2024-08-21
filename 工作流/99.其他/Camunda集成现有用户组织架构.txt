@@ -1,0 +1,25 @@
+@Service
+public class UserIntegrationService {
+
+    @Autowired
+    private IdentityService identityService;
+
+    public void syncUsers() {
+        // 获取现有用户组织架构的用户列表
+        List<User> users = userService.getAllUsers();
+
+        // 将用户同步到camunda的Identity Service中
+        for (User user : users) {
+            org.camunda.bpm.engine.identity.User camundaUser = identityService.newUser(user.getId());
+            camundaUser.setFirstName(user.getFirstName());
+            camundaUser.setLastName(user.getLastName());
+            camundaUser.setEmail(user.getEmail());
+            camundaUser.setPassword(user.getPassword());
+            identityService.saveUser(camundaUser);
+        }
+    }
+}
+
+通过syncUsers()方法将现有用户组织架构中的用户同步到camunda的Identity Service中。你可以根据实际需求添加其他相关代码，比如同步用户的角色等。
+
+通过这些步骤，我们可以将camunda与现有的用户组织架构进行集成，实现更好的用户管理和授权功能。
