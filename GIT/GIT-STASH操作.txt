@@ -8,10 +8,10 @@ git stash 的应用
 在commit代码前执行
 git stash # 将没有提交的内容(工作区和暂存区)的内容保存至堆栈
 git pull   # 拉取最新代码
-git pop   # 应用到本地仓库 并删除这个 stash 堆栈
+git stash pop   # 应用到本地仓库 并删除这个 stash 堆栈
 若有冲突解决冲突
 
-## 方法二（题外话，根git stash毛关系）
+## 方法二（题外话，跟git stash毛关系）
 git add .
 git commit -m "xxx"
 git pull --rebase [origin] [分支]  # 拉取若冲突采用变基(相当于git fetch ... + git rebase ...)解决冲突(不指定--rebase时默认是--merge相当于 git fetch ... + git merge ...)
