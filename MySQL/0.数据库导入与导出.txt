@@ -1,0 +1,12 @@
+一、查看变量
+show variables like 'character_set_server';
+show variables like '%collation%';
+--------------------------------------------------
+collation_connection	        utf8mb4_0900_ai_ci
+collation_database	            utf8mb4_general_ci
+collation_server	            utf8mb4_general_ci
+default_collation_for_utf8mb4	utf8mb4_0900_ai_ci
+
+二、导入导出
+.\mysqldump.exe -u root -p erp_local > c:\users\administrator\desktop\erp.sql
+.\mysql.exe -u root -p erp_local < c:\users\administrator\desktop\erp.sql
